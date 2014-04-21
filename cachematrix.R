@@ -11,28 +11,28 @@ makeCacheMatrix <- function ( x = matrix () ) {
         m <<- NULL
     }
     get <- function ( ) x
-    setmean <- function ( mean ) m <<- mean
-    getmean <- function( ) m
-    list( set = set, get = get, setmean = setmean, getmean = getmean )   
+    setInvMat <- function ( solve ) m <<- solve
+    getInvMat <- function( ) m
+    list( set = set, get = get, setInvMat = setInvMat, getInvMat = getInvMat )   
 }
 
 
 ## This function computes the inverse of the special "matrix" returned by makeCacheMatrix above. 
 ## If the inverse has already been calculated (and the matrix has not changed), 
-## then the cachesolve should retrieve the inverse from the cache.
+## then the cacheSolve will retrieve the inverse from the cache.
 
 cacheSolve <- function ( x, ... ) {
         
     ## Return a matrix that is the inverse of 'x'
   
-    m <- x$getmean( )
+    m <- x$getInvMat( )
     if ( !is.null ( m ) ) {
     ## Getting Inverse of a Matrix from Cached Data
         return ( m )
     }
     data <- x$get( )
     ## Calculating Inverse of a Matrix for first time
-    m <- mean ( data, ... )
-    x$setmean( m )
+    m <- solve ( data, ... )
+    x$setInvMat( m )
     m
 }
